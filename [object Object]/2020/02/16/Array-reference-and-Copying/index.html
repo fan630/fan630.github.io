@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"fan630.github.io","root":"/","scheme":"Pisces","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
+  </script>
+
+  <meta name="description" content="這是一篇記錄『深入淺出 JS30 Day 14：JavaScript References VS Copying』 的筆記文章, 這個觀念在各大筆式都很常被考到, 所以搞懂它, 擁抱它, 是一件很重要的事情.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Array Reference and Copying">
+<meta property="og:url" content="http://fan630.github.io/[object%20Object]/2020/02/16/Array-reference-and-Copying/index.html">
+<meta property="og:site_name" content="擴充海馬迴的百寶箱">
+<meta property="og:description" content="這是一篇記錄『深入淺出 JS30 Day 14：JavaScript References VS Copying』 的筆記文章, 這個觀念在各大筆式都很常被考到, 所以搞懂它, 擁抱它, 是一件很重要的事情.">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2020-02-16T14:56:22.000Z">
+<meta property="article:modified_time" content="2020-03-05T04:17:53.211Z">
+<meta property="article:author" content="Norris">
+<meta property="article:tag" content="javascript">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://fan630.github.io/[object%20Object]/2020/02/16/Array-reference-and-Copying/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>Array Reference and Copying | 擴充海馬迴的百寶箱</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">擴充海馬迴的百寶箱</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">屒型人</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>標籤</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分類</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>歸檔</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="http://fan630.github.io/[object%20Object]/2020/02/16/Array-reference-and-Copying/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Norris">
+      <meta itemprop="description" content="每天都要進步一點點">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="擴充海馬迴的百寶箱">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Array Reference and Copying
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2020-02-16 22:56:22" itemprop="dateCreated datePublished" datetime="2020-02-16T22:56:22+08:00">2020-02-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新於</span>
+                <time title="修改時間：2020-03-05 12:17:53" itemprop="dateModified" datetime="2020-03-05T12:17:53+08:00">2020-03-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JS30/" itemprop="url" rel="index"><span itemprop="name">JS30</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/%5Bobject%20Object%5D/2020/02/16/Array-reference-and-Copying/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="[object Object]/2020/02/16/Array-reference-and-Copying/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>這是一篇記錄『深入淺出 JS30 Day 14：JavaScript References VS Copying』 的筆記文章, 這個觀念在各大筆式都很常被考到, 所以搞懂它, 擁抱它, 是一件很重要的事情.</p>
+<a id="more"></a>
+
+<h2 id="陣列實作淺拷貝"><a href="#陣列實作淺拷貝" class="headerlink" title="陣列實作淺拷貝"></a>陣列實作淺拷貝</h2><h3 id="slice"><a href="#slice" class="headerlink" title="slice"></a>slice</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> players = [<span class="string">'Wes'</span>, <span class="string">'Sarah'</span>, <span class="string">'Ryan'</span>, <span class="string">'Poppy'</span>];</span><br><span class="line"><span class="keyword">const</span> team = players.slice()</span><br><span class="line"><span class="built_in">console</span>.log(players === team) <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="concat"><a href="#concat" class="headerlink" title="concat"></a>concat</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> players = [<span class="string">'Wes'</span>, <span class="string">'Sarah'</span>, <span class="string">'Ryan'</span>, <span class="string">'Poppy'</span>];</span><br><span class="line"><span class="keyword">const</span> team2 = [].concat(players)</span><br><span class="line"><span class="built_in">console</span>.log(players === team2) <span class="comment">//false</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="spread-operator"><a href="#spread-operator" class="headerlink" title="spread operator"></a>spread operator</h3><p>(我自己最常用的方法)</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> players = [<span class="string">'Wes'</span>, <span class="string">'Sarah'</span>, <span class="string">'Ryan'</span>, <span class="string">'Poppy'</span>];</span><br><span class="line"><span class="keyword">const</span> team3 = [...players]</span><br><span class="line"><span class="built_in">console</span>.log(players === team3) <span class="comment">//false</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Array-from"><a href="#Array-from" class="headerlink" title="Array.from"></a>Array.from</h3><p>這個方法也常用來把類陣列轉變為陣列的用法, 例如用在querySelectorAll的篩選器上使用. </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> players = [<span class="string">'Wes'</span>, <span class="string">'Sarah'</span>, <span class="string">'Ryan'</span>, <span class="string">'Poppy'</span>];</span><br><span class="line"><span class="keyword">const</span> team4 = <span class="built_in">Array</span>.from(players)</span><br><span class="line"><span class="built_in">console</span>.log(players === team4) <span class="comment">//false</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="物件實作淺拷貝"><a href="#物件實作淺拷貝" class="headerlink" title="物件實作淺拷貝"></a>物件實作淺拷貝</h2><h3 id="Object-assign-target"><a href="#Object-assign-target" class="headerlink" title="Object.assign({}, target)"></a>Object.assign({}, target)</h3><p>示範要增key和value的用法</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> person = &#123;</span><br><span class="line">    name: <span class="string">'Wes Bos'</span>,</span><br><span class="line">    age: <span class="number">80</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> team6 = <span class="built_in">Object</span>.assign(&#123;&#125;, person, &#123;<span class="attr">number</span>:<span class="number">99</span>&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(team6) <span class="comment">// &#123;name: "Wes Bos", age: 80, number: 99&#125;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>記得這樣做的話只有一層複製</p>
+</blockquote>
+<h3 id="JSON-parse-JSON-stringify-target"><a href="#JSON-parse-JSON-stringify-target" class="headerlink" title="JSON.parse(JSON.stringify(target))"></a>JSON.parse(JSON.stringify(target))</h3><p>先字串化, 再物件化</p>
+<p><code>JSON.parse(JSON.stringly)</code>, 如果是不帶function就會做到深拷貝, 如果有帶可能就要用<code>prototype</code>去做</p>
+<h2 id="影片內容補充"><a href="#影片內容補充" class="headerlink" title="影片內容補充"></a>影片內容補充</h2><h3 id="示範一"><a href="#示範一" class="headerlink" title="示範一"></a>示範一</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//數字</span></span><br><span class="line"><span class="keyword">let</span> g = <span class="string">'A'</span></span><br><span class="line"><span class="keyword">let</span> h = <span class="string">'A'</span></span><br><span class="line"><span class="keyword">let</span> i = <span class="string">'A'</span></span><br><span class="line"></span><br><span class="line">(h = <span class="string">'B'</span>), (i = <span class="string">'C'</span>), (g += h), (g += i)</span><br><span class="line"><span class="built_in">console</span>.log(g, h, i)</span><br></pre></td></tr></table></figure>
+<h3 id="示範二"><a href="#示範二" class="headerlink" title="示範二"></a>示範二</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 字串</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createObj</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">          name</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> p1 = createObj(<span class="string">'alex'</span>)</span><br><span class="line"><span class="keyword">let</span> p2 = createObj(<span class="string">'sara'</span>)</span><br><span class="line"><span class="keyword">let</span> p3 = createObj(<span class="string">'howard'</span>)</span><br><span class="line"><span class="keyword">let</span> p4= createObj(<span class="string">'thor'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> f1 = [p1, p2, p3, p4]</span><br><span class="line"><span class="keyword">let</span> f2 = f1.slice()</span><br><span class="line"></span><br><span class="line">f2[<span class="number">0</span>].name = <span class="string">'alexander'</span>;</span><br><span class="line">f2[<span class="number">0</span>] = &#123;<span class="attr">name</span>: <span class="string">'alexander'</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(f1[<span class="number">0</span>].name)</span><br></pre></td></tr></table></figure>
+<h3 id="示範三"><a href="#示範三" class="headerlink" title="示範三"></a>示範三</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 物件</span></span><br><span class="line"><span class="keyword">let</span> person = &#123;</span><br><span class="line">    name: <span class="string">'wes'</span>, </span><br><span class="line">    age: <span class="number">80</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> p2 = person</span><br><span class="line"></span><br><span class="line"><span class="keyword">case</span> <span class="number">1</span>: person = <span class="string">'xxx'</span></span><br><span class="line"><span class="built_in">console</span>.log(person, p2)</span><br><span class="line"></span><br><span class="line"><span class="keyword">case</span> <span class="number">2</span>: person.name = <span class="string">'xxx'</span></span><br><span class="line"><span class="built_in">console</span>.log(person, p2)</span><br></pre></td></tr></table></figure>
+<h3 id="示範四"><a href="#示範四" class="headerlink" title="示範四"></a>示範四</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// object.assign</span></span><br><span class="line"><span class="keyword">let</span> a = &#123;<span class="attr">name</span>: <span class="string">'alex'</span>, <span class="attr">age</span>: <span class="number">36</span>&#125;</span><br><span class="line"><span class="keyword">let</span> b = &#123;<span class="attr">name</span>: <span class="string">'sara'</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 後往前覆蓋</span></span><br><span class="line"><span class="keyword">let</span> c = <span class="built_in">Object</span>.assign(a, b)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(c)</span><br><span class="line"><span class="comment">// &#123;name: 'sara', age: 36&#125;</span></span><br></pre></td></tr></table></figure>
+<h3 id="示範五"><a href="#示範五" class="headerlink" title="示範五"></a>示範五</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 概念, 未被收入到sheet中</span></span><br><span class="line"><span class="keyword">let</span> aa = &#123;</span><br><span class="line">    name: <span class="string">'alex'</span>, </span><br><span class="line">    age: <span class="number">36</span>, </span><br><span class="line">    sayhi:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'hi'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">aa.sayhi() <span class="comment">// hi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> bb = <span class="built_in">JSON</span>.parse(<span class="built_in">JSON</span>.stringly(aa))</span><br><span class="line"></span><br><span class="line">bb.sayhi()<span class="comment">// undefined </span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> cc = <span class="built_in">Object</span>.assign(&#123;&#125;, aa)</span><br><span class="line"></span><br><span class="line">cc.sayhi() <span class="comment">// hi</span></span><br></pre></td></tr></table></figure>
+<h3 id="示範六"><a href="#示範六" class="headerlink" title="示範六"></a>示範六</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 直接看sheet, 這是obj.assign和json.parse(json.stringly)的比較</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> wes = &#123;</span><br><span class="line">    name: <span class="string">'wes'</span>, </span><br><span class="line">    age: <span class="number">80</span>, </span><br><span class="line">    social:&#123;</span><br><span class="line">        facebook:<span class="string">'wes'</span>, </span><br><span class="line">        twitter: <span class="string">'wes developer'</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="示範七"><a href="#示範七" class="headerlink" title="示範七"></a>示範七</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> ary = [&#123;<span class="attr">a</span>: <span class="number">1</span>&#125;, &#123;<span class="attr">b</span>: <span class="number">2</span>&#125;, &#123;<span class="attr">c</span>:<span class="number">3</span>&#125;]</span><br><span class="line">ary.forEach(<span class="function"><span class="params">item</span> =&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> key <span class="keyword">in</span> item)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(key, item[key])</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">//a 1</span></span><br><span class="line"><span class="comment">//b 2</span></span><br><span class="line"><span class="comment">//c 3</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> ary = [&#123;<span class="attr">a</span>: <span class="number">1</span>&#125;, &#123;<span class="attr">b</span>: <span class="number">2</span>&#125;, &#123;<span class="attr">c</span>:<span class="number">3</span>&#125;]</span><br><span class="line">ary.forEach(<span class="function">(<span class="params">item, index</span>) =&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">Object</span>.keys(item).forEach(<span class="function"><span class="params">key</span> =&gt;</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(index, key, item[key])</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">//0 "a" 1</span></span><br><span class="line"><span class="comment">//1 "b" 2</span></span><br><span class="line"><span class="comment">//2 "c" 3</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h2><p>洋洋灑灑寫了一堆, 這場蠻值得的, 要常回來多看, 不敢說自己已經百分百掌握. 總之概念就是要先存值再賦值, 往這個概念走就八九不離十, 存值比較重要的是, 如果沒有這個值, 得要開新的記憶體空間</p>
+<p><a href="https://docs.google.com/spreadsheets/d/11WNMzrYUtRxN5WOCDFtv5RzIKsKYEC_slBYtjMHkFDU/edit#gid=0" target="_blank" rel="noopener">範例答案</a></p>
+<p><a href="https://www.youtube.com/watch?v=sxe-oahUARI" target="_blank" rel="noopener">此範例以Alex宅幹嘛的教學和wes bros為主</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/javascript/" rel="tag"># javascript</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/%5Bobject%20Object%5D/2020/02/16/Array-Cardio-ll/" rel="prev" title="Array Cardio ll">
+      <i class="fa fa-chevron-left"></i> Array Cardio ll
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/%5Bobject%20Object%5D/2020/02/16/LocalStorage/" rel="next" title="LocalStorage">
+      LocalStorage <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#陣列實作淺拷貝"><span class="nav-number">1.</span> <span class="nav-text">陣列實作淺拷貝</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#slice"><span class="nav-number">1.1.</span> <span class="nav-text">slice</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#concat"><span class="nav-number">1.2.</span> <span class="nav-text">concat</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#spread-operator"><span class="nav-number">1.3.</span> <span class="nav-text">spread operator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Array-from"><span class="nav-number">1.4.</span> <span class="nav-text">Array.from</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#物件實作淺拷貝"><span class="nav-number">2.</span> <span class="nav-text">物件實作淺拷貝</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-assign-target"><span class="nav-number">2.1.</span> <span class="nav-text">Object.assign({}, target)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JSON-parse-JSON-stringify-target"><span class="nav-number">2.2.</span> <span class="nav-text">JSON.parse(JSON.stringify(target))</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#影片內容補充"><span class="nav-number">3.</span> <span class="nav-text">影片內容補充</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#示範一"><span class="nav-number">3.1.</span> <span class="nav-text">示範一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#示範二"><span class="nav-number">3.2.</span> <span class="nav-text">示範二</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#示範三"><span class="nav-number">3.3.</span> <span class="nav-text">示範三</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#示範四"><span class="nav-number">3.4.</span> <span class="nav-text">示範四</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#示範五"><span class="nav-number">3.5.</span> <span class="nav-text">示範五</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#示範六"><span class="nav-number">3.6.</span> <span class="nav-text">示範六</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#示範七"><span class="nav-number">3.7.</span> <span class="nav-text">示範七</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#結論"><span class="nav-number">4.</span> <span class="nav-text">結論</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Norris</p>
+  <div class="site-description" itemprop="description">每天都要進步一點點</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fan630" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fan630" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:norriswu266@gmail.com" title="E-Mail → mailto:norriswu266@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Norris</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://msgboard.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://fan630.github.io/[object%20Object]/2020/02/16/Array-reference-and-Copying/";
+    this.page.identifier = "[object Object]/2020/02/16/Array-reference-and-Copying/";
+    this.page.title = "Array Reference and Copying";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://msgboard.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
