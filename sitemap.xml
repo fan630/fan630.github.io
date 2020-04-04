@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://fan630.github.io/uncategorized/2020/02/17/vue-implement-objects-and-external-data/</loc>
+    
+    <lastmod>2020-04-04T07:56:26.085Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://fan630.github.io/uncategorized/2020/03/06/object-prototype/</loc>
     
     <lastmod>2020-03-21T15:12:00.222Z</lastmod>
@@ -19,13 +26,6 @@
     <loc>http://fan630.github.io/maskMap/2020/02/16/Array-replace-inserted-to-original/</loc>
     
     <lastmod>2020-03-05T05:43:34.663Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://fan630.github.io/maskMap/2020/02/17/vue-implement-objects-and-external-data/</loc>
-    
-    <lastmod>2020-03-05T05:43:22.764Z</lastmod>
     
   </url>
   
