@@ -2,6 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://fan630.github.io/uncategorized/2020/02/16/X-template-to-Vue-Cli/</loc>
+    
+    <lastmod>2020-04-04T08:01:12.310Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://fan630.github.io/uncategorized/2020/02/16/Array-replace-inserted-to-original/</loc>
+    
+    <lastmod>2020-04-04T08:01:06.441Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://fan630.github.io/uncategorized/2020/02/16/Sticky-Scrollbar-effect/</loc>
+    
+    <lastmod>2020-04-04T08:01:00.595Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://fan630.github.io/uncategorized/2020/02/17/select-related-data-tips/</loc>
+    
+    <lastmod>2020-04-04T08:00:54.482Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://fan630.github.io/uncategorized/2020/02/17/vue-implement-objects-and-external-data/</loc>
     
     <lastmod>2020-04-04T07:56:26.085Z</lastmod>
@@ -23,37 +51,9 @@
   </url>
   
   <url>
-    <loc>http://fan630.github.io/maskMap/2020/02/16/Array-replace-inserted-to-original/</loc>
-    
-    <lastmod>2020-03-05T05:43:34.663Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://fan630.github.io/maskMap/2020/02/17/select-related-data-tips/</loc>
-    
-    <lastmod>2020-03-05T05:43:07.784Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://fan630.github.io/uncategorized/2020/02/20/Promise-you-need-to-know/</loc>
     
     <lastmod>2020-03-05T05:42:52.785Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://fan630.github.io/maskMap/2020/02/16/X-template-to-Vue-Cli/</loc>
-    
-    <lastmod>2020-03-05T05:42:43.773Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://fan630.github.io/maskMap/2020/02/16/Sticky-Scrollbar-effect/</loc>
-    
-    <lastmod>2020-03-05T05:42:24.767Z</lastmod>
     
   </url>
   
