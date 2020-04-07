@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"fan630.github.io","root":"/","scheme":"Pisces","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
+  </script>
+
+  <meta name="description" content="說來慚愧, 已經學了快一年的js, 筆者今天才算是徹底了解了這個觀念, 不知道那些年我是怎麼debug的…當初知道這個概念是看教學影片, 但是一知半解, 我一直以為就是很簡單的, 回傳的東西要用另外一個變數接收但是根本只瞭解了一半而已…寫這篇文章不為別的, 就是為了要讓自己更了解.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Immutable 觀念">
+<meta property="og:url" content="http://fan630.github.io/uncategorized/2020/04/07/Immutable/index.html">
+<meta property="og:site_name" content="擴充海馬迴的百寶箱">
+<meta property="og:description" content="說來慚愧, 已經學了快一年的js, 筆者今天才算是徹底了解了這個觀念, 不知道那些年我是怎麼debug的…當初知道這個概念是看教學影片, 但是一知半解, 我一直以為就是很簡單的, 回傳的東西要用另外一個變數接收但是根本只瞭解了一半而已…寫這篇文章不為別的, 就是為了要讓自己更了解.">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2020-04-07T10:22:09.000Z">
+<meta property="article:modified_time" content="2020-04-07T13:16:03.748Z">
+<meta property="article:author" content="Norris">
+<meta property="article:tag" content="javascript">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://fan630.github.io/uncategorized/2020/04/07/Immutable/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>Immutable 觀念 | 擴充海馬迴的百寶箱</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">擴充海馬迴的百寶箱</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">屒型人</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>標籤</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分類</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>歸檔</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="http://fan630.github.io/uncategorized/2020/04/07/Immutable/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Norris">
+      <meta itemprop="description" content="每天都要進步一點點">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="擴充海馬迴的百寶箱">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Immutable 觀念
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+              
+
+              <time title="創建時間：2020-04-07 18:22:09 / 修改時間：21:16:03" itemprop="dateCreated datePublished" datetime="2020-04-07T18:22:09+08:00">2020-04-07</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/uncategorized/2020/04/07/Immutable/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="uncategorized/2020/04/07/Immutable/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>說來慚愧, 已經學了快一年的js, 筆者今天才算是徹底了解了這個觀念, 不知道那些年我是怎麼debug的…<br>當初知道這個概念是看教學影片, 但是一知半解, 我一直以為就是很簡單的, 回傳的東西要用另外一個變數接收<br>但是根本只瞭解了一半而已…寫這篇文章不為別的, 就是為了要讓自己更了解. </p>
+<a id="more"></a>
+
+<h2 id="Primitive-type"><a href="#Primitive-type" class="headerlink" title="Primitive type"></a>Primitive type</h2><p>中文翻譯為基本型別, 這就是我們今天的主角之一.<br>在mdn也寫得很清楚除了, 就是除了Object以外, 都是基本型別<br>包含了最常見到的: Number, String, Boolean, Null, Undefined 和比較不熟的BigInt和Symbol.</p>
+<p>這基本型別的特色就是不可修改的 -&gt; Immutable </p>
+<p>什麼意思? </p>
+<p>先來看範例</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="string">'hello'</span> </span><br><span class="line">a = <span class="string">'yo'</span></span><br></pre></td></tr></table></figure>
+<p>a: ‘hello’ 存在0x01的記憶體位置<br>a: ‘yo’ 不是把0x01改成hello, 而是新開記憶體位置0x02存yo</p>
+<hr>
+<p>這其實也衍伸了一個常用範例</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="string">'hello'</span></span><br><span class="line">a = a + yo</span><br><span class="line"></span><br><span class="line"><span class="comment">// 可以改寫為</span></span><br><span class="line">a += <span class="string">'yo'</span> </span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(a) <span class="comment">// helloyo</span></span><br></pre></td></tr></table></figure>
+<p>你不會寫成這樣, 因為寫成這樣, 記憶體位置一樣, 所以還是輸出’hello’</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a + yo </span><br><span class="line"><span class="built_in">console</span>.log(a) <span class="comment">// hello</span></span><br></pre></td></tr></table></figure>
+<hr>
+<p>同樣的, 使用方法一樣也是, 因為要新開記憶體位置, 所以重新給變數是一定要的, 即使是一樣的變數也是可以接受的. </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="string">'hello'</span></span><br><span class="line">a.toUpperCase() <span class="comment">// 這步是錯的</span></span><br><span class="line"><span class="built_in">console</span>.log(a) <span class="comment">//  hello</span></span><br></pre></td></tr></table></figure>
+<p>要改成這樣</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="string">'hello'</span> </span><br><span class="line">a = a.toUpperCase() </span><br><span class="line"><span class="built_in">console</span>.log(a) <span class="comment">// HELLO</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看成, 我先把a.toUpperCase = ‘Hello’, 存在0x02中, 再把它存到a裡面. </p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>除了物件, 陣列以外值都是不可變的, 所以call toUpperCase()是沒有結果.<br>(我之前在split被搞到印象很深刻)</p>
+<hr>
+<h2 id="Object-Types"><a href="#Object-Types" class="headerlink" title="Object Types"></a>Object Types</h2><blockquote>
+<p>Object呢，你可以想像成蓋房子一樣，Primitive Types就像是一塊磚子，但能單靠一塊一塊磚子疊出來的房子不可能大到哪裡去，是吧 ?這時候我們是不是就需要鋼筋阿水泥阿混擬土阿，將各種元素包在一起的的結構去建造出更大結構的房子，Object就是這樣的一個存在，Object可以讓我們將多個Value包再一起，也可以Object包Object，藉此能做出一個更複雜的結構完成更複雜的事情。</p>
+</blockquote>
+<p>上述是我在鐵人賽看到別人寫的, 讓我對Object更有想像. </p>
+<h3 id="Mutator-Methods"><a href="#Mutator-Methods" class="headerlink" title="Mutator Methods"></a>Mutator Methods</h3><blockquote>
+<p>會實際修改到Array的method</p>
+</blockquote>
+<p>這種變種方法, 因為會直接改變arr, 都不用再用變數接收<br>如果有用變數接收可以看mdn的定義, 像是push是回傳陣列長度, 而splice回傳被刪除的陣列元素</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line">arr.push(<span class="number">4</span>)</span><br><span class="line">arr.unshift(<span class="number">0</span>)</span><br><span class="line">arr.splice(<span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line"><span class="built_in">console</span>.log(arr)<span class="comment">// [0,2,3,4]</span></span><br><span class="line"></span><br><span class="line">arr = arr.push(<span class="number">4</span>)</span><br><span class="line"><span class="built_in">console</span>.log(arr)  <span class="comment">// 4 -&gt; 這是陣列長度</span></span><br><span class="line"></span><br><span class="line">arr = arr.splice(<span class="number">1</span>, <span class="number">1</span>)  </span><br><span class="line"><span class="built_in">console</span>.log(arr) <span class="comment">// 1 -&gt; 這是被刪除的元素</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#Instance_methods" target="_blank" rel="noopener">mdn</a></p>
+</blockquote>
+<h3 id="Accessor-methods"><a href="#Accessor-methods" class="headerlink" title="Accessor methods"></a>Accessor methods</h3><p>對比於Mutator method，這一類的method便是沒有實際更動到原array的methods，而是回傳一個全新的array instance。通常回傳的東西不是array了, 因此需要變數接收. (注意是通常, 非絕對)</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> animalSign = [ <span class="string">'鼠'</span>, <span class="string">'牛'</span>, <span class="string">'虎'</span>, <span class="string">'兔'</span>, <span class="string">'龍'</span>, <span class="string">'蛇'</span>, <span class="string">'馬'</span>, <span class="string">'羊'</span>, <span class="string">'猴'</span>, <span class="string">'雞'</span>, <span class="string">'狗'</span>, <span class="string">'豬'</span> ]</span><br><span class="line"><span class="keyword">var</span> newAnimal = animalSign.join(<span class="string">'!'</span>)</span><br><span class="line"><span class="built_in">console</span>.log(newAnimal) <span class="comment">// 鼠!牛!虎!兔!龍!蛇!馬!羊!猴!雞!狗!豬</span></span><br></pre></td></tr></table></figure>
+
+<p>&gt; <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#Accessor_methods" target="_blank" rel="noopener">mdn</a></p>
+<h3 id="Iteration-methods"><a href="#Iteration-methods" class="headerlink" title="Iteration methods"></a>Iteration methods</h3><p>迭代方法, 基本上就是針對陣列一個一個訪問.<br>這部分其實筆者在其他的篇章已經介紹很多次了, 直接附上連結.</p>
+<p><a href="https://fan630.github.io/JS30/2020/02/16/Array-Cardio">Array-Cardio</a><br><a href="https://fan630.github.io/JS30/2020/02/16/Array-Cardio-ll">Array-Cardio-II</a></p>
+<p>&gt; <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#Iteration_methods" target="_blank" rel="noopener">mdn</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/javascript/" rel="tag"># javascript</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/uncategorized/2020/03/06/object-prototype/" rel="prev" title="物件原型鍊">
+      <i class="fa fa-chevron-left"></i> 物件原型鍊
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Primitive-type"><span class="nav-number">1.</span> <span class="nav-text">Primitive type</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#總結"><span class="nav-number">1.1.</span> <span class="nav-text">總結</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Object-Types"><span class="nav-number">2.</span> <span class="nav-text">Object Types</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Mutator-Methods"><span class="nav-number">2.1.</span> <span class="nav-text">Mutator Methods</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Accessor-methods"><span class="nav-number">2.2.</span> <span class="nav-text">Accessor methods</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Iteration-methods"><span class="nav-number">2.3.</span> <span class="nav-text">Iteration methods</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Norris</p>
+  <div class="site-description" itemprop="description">每天都要進步一點點</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fan630" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fan630" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:norriswu266@gmail.com" title="E-Mail → mailto:norriswu266@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Norris</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://msgboard.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://fan630.github.io/uncategorized/2020/04/07/Immutable/";
+    this.page.identifier = "uncategorized/2020/04/07/Immutable/";
+    this.page.title = "Immutable 觀念";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://msgboard.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
