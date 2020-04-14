@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"fan630.github.io","root":"/","scheme":"Pisces","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
   </script>
 
-  <meta name="description" content="這個其實蠻常看到的, 但是我從來沒有做過, 而且兩筆資料是有相關性的, 現在只想到要改變資料的結構,這樣只要選到正確的資料, 那同時另外一筆底下的陣列中的值也會篩選到…">
+  <meta name="description" content="這個其實蠻常看到的,最常出現是在透過縣市選擇區域, 例如說先點選新北市, 再從新北市各分區裡面挑一個, 例如說新店區爾爾. 通常拿到的可能是一般陣列裡面包著物件的格式, 因此底下就在敘述如何改變資料的結構.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="兩個select,怎麼篩選連動的資料?">
+<meta property="og:title" content="做出一個連動選擇表單">
 <meta property="og:url" content="http://fan630.github.io/uncategorized/2020/02/17/select-related-data-tips/index.html">
 <meta property="og:site_name" content="擴充海馬迴的百寶箱">
-<meta property="og:description" content="這個其實蠻常看到的, 但是我從來沒有做過, 而且兩筆資料是有相關性的, 現在只想到要改變資料的結構,這樣只要選到正確的資料, 那同時另外一筆底下的陣列中的值也會篩選到…">
+<meta property="og:description" content="這個其實蠻常看到的,最常出現是在透過縣市選擇區域, 例如說先點選新北市, 再從新北市各分區裡面挑一個, 例如說新店區爾爾. 通常拿到的可能是一般陣列裡面包著物件的格式, 因此底下就在敘述如何改變資料的結構.">
 <meta property="og:locale" content="zh_TW">
 <meta property="article:published_time" content="2020-02-17T02:43:01.000Z">
-<meta property="article:modified_time" content="2020-04-04T08:00:54.482Z">
+<meta property="article:modified_time" content="2020-04-14T13:17:27.265Z">
 <meta property="article:author" content="Norris">
 <meta property="article:tag" content="javascript">
 <meta name="twitter:card" content="summary">
@@ -45,7 +45,7 @@
   };
 </script>
 
-  <title>兩個select,怎麼篩選連動的資料? | 擴充海馬迴的百寶箱</title>
+  <title>做出一個連動選擇表單 | 擴充海馬迴的百寶箱</title>
   
 
 
@@ -201,7 +201,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          兩個select,怎麼篩選連動的資料?
+          做出一個連動選擇表單
         </h1>
 
         <div class="post-meta">
@@ -218,7 +218,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新於</span>
-                <time title="修改時間：2020-04-04 16:00:54" itemprop="dateModified" datetime="2020-04-04T16:00:54+08:00">2020-04-04</time>
+                <time title="修改時間：2020-04-14 21:17:27" itemprop="dateModified" datetime="2020-04-14T21:17:27+08:00">2020-04-14</time>
               </span>
 
           
@@ -246,13 +246,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>這個其實蠻常看到的, 但是我從來沒有做過, 而且兩筆資料是有相關性的, 現在只想到要改變資料的結構,這樣只要選到正確的資料, 那同時另外一筆底下的陣列中的值也會篩選到…</p>
+        <p>這個其實蠻常看到的,最常出現是在透過縣市選擇區域, 例如說先點選新北市, 再從新北市各分區裡面挑一個, 例如說新店區爾爾. 通常拿到的可能是一般陣列裡面包著物件的格式, 因此底下就在敘述如何改變資料的結構. </p>
 <a id="more"></a>
 
-<h3 id="改變資料結構的作法-引入外部資源"><a href="#改變資料結構的作法-引入外部資源" class="headerlink" title="改變資料結構的作法, 引入外部資源"></a>改變資料結構的作法, 引入外部資源</h3><p>果然如我所想的, 老師有改變資料結構啊, 難怪我根本做不出來<br>這邊來推薦下這個<a href="http://jsonviewer.stack.hu/" target="_blank" rel="noopener">網站</a>, 可以把資料轉成比較好理解的格式. </p>
-<p>基本上很簡單, 只要在vue devtool裡面點選 =&gt; 點點點, 就可以貼在這個<a href="http://jsonviewer.stack.hu/" target="_blank" rel="noopener">網站</a>的text在裡面惹<br>正確的作法是改成底下的資料結構形式, 這樣就很直覺了</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> newData = [</span><br><span class="line">    &#123;</span><br><span class="line">      cityName:<span class="string">'台北市'</span>, </span><br><span class="line">      areaList:[</span><br><span class="line">        &#123;</span><br><span class="line">          areaName: <span class="string">'文山區'</span>, </span><br><span class="line">          zipCode:<span class="string">'231'</span></span><br><span class="line">        &#125;, </span><br><span class="line">        &#123;</span><br><span class="line">          areaName: <span class="string">'萬華區'</span>,</span><br><span class="line">          zipCode: <span class="string">'211'</span></span><br><span class="line">        &#125;, </span><br><span class="line">        &#123;</span><br><span class="line">          areaName: <span class="string">'南港區'</span>,</span><br><span class="line">          zipCode: <span class="string">'116'</span></span><br><span class="line">        &#125;, </span><br><span class="line"></span><br><span class="line">      ]</span><br><span class="line">    &#125;, </span><br><span class="line">    &#123;</span><br><span class="line">      cityName: <span class="string">'新北市'</span>,</span><br><span class="line">      areaList: [</span><br><span class="line">        &#123;</span><br><span class="line">          areaName: <span class="string">'新店區'</span>,</span><br><span class="line">          zipCode: <span class="string">'231'</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          areaName: <span class="string">'中和區'</span>,</span><br><span class="line">          zipCode: <span class="string">'211'</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          areaName: <span class="string">'永和區'</span>,</span><br><span class="line">          zipCode: <span class="string">'235'</span></span><br><span class="line">        &#125;,</span><br><span class="line">      ]</span><br><span class="line">    &#125;, </span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h2 id="資料結構"><a href="#資料結構" class="headerlink" title="資料結構"></a>資料結構</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">menu: [</span><br><span class="line">    &#123;</span><br><span class="line">        type: <span class="string">'私房小物'</span>,</span><br><span class="line">        title: <span class="string">'Zippo打火機'</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        type: <span class="string">'私房小物'</span>,</span><br><span class="line">        title: <span class="string">'台灣菸酒公司紀念狀'</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        type: <span class="string">'最美的地方'</span>,</span><br><span class="line">        title: <span class="string">'山頂上'</span>,</span><br><span class="line">        </span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        type: <span class="string">'最美的地方'</span>,</span><br><span class="line">        title: <span class="string">'西湖河畔'</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        type: <span class="string">'鼎泰豐'</span>,</span><br><span class="line">        title: <span class="string">'小籠包'</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        type: <span class="string">'私房小物'</span>,</span><br><span class="line">        title: <span class="string">'3231股票一張'</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        type: <span class="string">'鼎泰豐'</span>,</span><br><span class="line">        title: <span class="string">'粒粒分明炒飯'</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
 
+
+
+<h2 id="外部資源參考"><a href="#外部資源參考" class="headerlink" title="外部資源參考"></a>外部資源參考</h2><p>這邊來推薦下這個<a href="http://jsonviewer.stack.hu/" target="_blank" rel="noopener">網站</a>, 可以把資料轉成比較好理解的格式.<br>基本上很簡單, 只要在Vue devtool裡面點選 =&gt; 點點點, 就可以貼在這個<a href="http://jsonviewer.stack.hu/" target="_blank" rel="noopener">網站</a>的text在裡面<br>正確的作法是改成底下的資料結構形式, 這樣就很直覺了</p>
 <h3 id="不改變資料結構的作法"><a href="#不改變資料結構的作法" class="headerlink" title="不改變資料結構的作法"></a>不改變資料結構的作法</h3><p>現在想到另外一種方法, 但是這個只有在vue裡面才有作用, 這個filter就是<code>e.target.value</code>, 要和item中county值相同<br>但是問題是, 現在這個<code>item.properties.county</code>這不是單一值….</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">vm.dataAry.forEach(<span class="function"><span class="params">item</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (vm.filter === item.properties.county)&#123;</span><br><span class="line">        vm.townFilter.push(item.properties.town)</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="number">123</span>)</span><br><span class="line">        <span class="comment">// =&gt; 一直印出123...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
@@ -355,7 +356,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#改變資料結構的作法-引入外部資源"><span class="nav-number">1.</span> <span class="nav-text">改變資料結構的作法, 引入外部資源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不改變資料結構的作法"><span class="nav-number">2.</span> <span class="nav-text">不改變資料結構的作法</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#資料結構"><span class="nav-number">1.</span> <span class="nav-text">資料結構</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#外部資源參考"><span class="nav-number">2.</span> <span class="nav-text">外部資源參考</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#不改變資料結構的作法"><span class="nav-number">2.1.</span> <span class="nav-text">不改變資料結構的作法</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -493,7 +494,7 @@
   var disqus_config = function() {
     this.page.url = "http://fan630.github.io/uncategorized/2020/02/17/select-related-data-tips/";
     this.page.identifier = "uncategorized/2020/02/17/select-related-data-tips/";
-    this.page.title = "兩個select,怎麼篩選連動的資料?";
+    this.page.title = "做出一個連動選擇表單";
     };
   NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
     if (window.DISQUS) {
