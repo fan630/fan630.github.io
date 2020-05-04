@@ -185,6 +185,248 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="http://fan630.github.io/uncategorized/2020/05/04/null/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Norris">
+      <meta itemprop="description" content="每天都要進步一點點">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="擴充海馬迴的百寶箱">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/uncategorized/2020/05/04/null/" class="post-title-link" itemprop="url">經典面試題目</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+              
+
+              <time title="創建時間：2020-05-04 09:45:13 / 修改時間：09:56:23" itemprop="dateCreated datePublished" datetime="2020-05-04T09:45:13+08:00">2020-05-04</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/uncategorized/2020/05/04/null/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="uncategorized/2020/05/04/null/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>這篇文章, 應該不用我多廢話了, 就是拿來紀錄每一次都要重新想過一次的題目, 每次面試前都還要再了解一次<br>真不知道自己是不是真的懂了…</p>
+<h2 id="for迴圈"><a href="#for迴圈" class="headerlink" title="for迴圈"></a>for迴圈</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++)&#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(i)</span><br><span class="line">    &#125;, <span class="number">1000</span> * i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>ans: 這題我就不多說了, 一共印出5個5, 每個5隔5秒. </p>
+<p>但是如果面試官問我原因, 我回答得出來嗎? </p>
+<p>關鍵就在於<code>i</code>被污染了. </p>
+<p>總的來說, 在跑第一次迴圈的時候, 因為setTimeout是cb所以會被放到queue裡面.<br>這時候<code>i</code>會繼續執行到5, 跑到5後跳出迴圈, 承接底下的queue, queue放到stack, 並和i同時作用. </p>
+<p>所以要修改, 那就要從<code>i</code>下手</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++)&#123;</span><br><span class="line">    (<span class="function">(<span class="params">i</span>) =&gt;</span> &#123;</span><br><span class="line">        setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(i)</span><br><span class="line">        &#125;, <span class="number">1000</span> * i);</span><br><span class="line">    &#125;)(i)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>這樣就會變成一次執行一個, 並且從0開始執行到4, 而時間也會趨於正常. </p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="http://fan630.github.io/uncategorized/2020/05/04/null/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Norris">
+      <meta itemprop="description" content="每天都要進步一點點">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="擴充海馬迴的百寶箱">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/uncategorized/2020/05/04/null/" class="post-title-link" itemprop="url">增進效能技巧</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+              
+
+              <time title="創建時間：2020-05-04 09:29:48 / 修改時間：09:37:29" itemprop="dateCreated datePublished" datetime="2020-05-04T09:29:48+08:00">2020-05-04</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/uncategorized/2020/05/04/null/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="uncategorized/2020/05/04/null/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>這篇文章是拿來紀錄增進如何增進效能涵蓋js或是任何框架, 所謂先求有再求好. 可能現階段還用不到, 但是留著之後可以用</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/uncategorized/2020/05/04/null/#more" rel="contents">
+                閱讀全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="http://fan630.github.io/uncategorized/2020/04/15/null/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Norris">
+      <meta itemprop="description" content="每天都要進步一點點">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="擴充海馬迴的百寶箱">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/uncategorized/2020/04/15/null/" class="post-title-link" itemprop="url">Vue實作CSS過場和jQuery動畫</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+              
+
+              <time title="創建時間：2020-04-15 21:34:08 / 修改時間：22:02:04" itemprop="dateCreated datePublished" datetime="2020-04-15T21:34:08+08:00">2020-04-15</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/uncategorized/2020/04/15/null/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="uncategorized/2020/04/15/null/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>第一次看到這個標題, 其實我沒有什麼感覺, 看完以後發現自己對於框架的認識還是太少了.<br>雖然說這個範例就算不用Vue, 直接套用BootStrap的methods同樣可以做. 但這篇文章的價值就是在培養自己的新思維</p>
+<p>(前情提要: 如果要改變輪播的過場畫面, 直接透過改變資料的方式是做不到的, 需要綁定Dom元件.)</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/uncategorized/2020/04/15/null/#more" rel="contents">
+                閱讀全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-TW">
     <link itemprop="mainEntityOfPage" href="http://fan630.github.io/uncategorized/2020/04/07/this-is-what-you-know/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -644,7 +886,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新於</span>
-                <time title="修改時間：2020-04-07 21:38:59" itemprop="dateModified" datetime="2020-04-07T21:38:59+08:00">2020-04-07</time>
+                <time title="修改時間：2020-05-04 11:05:50" itemprop="dateModified" datetime="2020-05-04T11:05:50+08:00">2020-05-04</time>
               </span>
 
           
@@ -673,7 +915,7 @@
 
       
           <p><img src="https://images.unsplash.com/photo-1555099962-4199c345e5dd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=300" alt=""></p>
-<p>本篇文章主要在介紹<code>split/match/indexOf/includes/search/join</code>的用法, 會有這一次的觀念釐清, 主要是因為自己在撰寫程式的時候, 常常會搞不清楚要用哪一個語法 . 於是會開始上網找mdn, 不僅浪費時間又耗費精神, 為了加速自己開發的流程, 所以特別把用法和適用場景詳述一番. </p>
+<p>本篇文章主要在介紹<code>split/match/indexOf/includes/search/join/concat</code>的用法, 會有這一次的觀念釐清, 主要是因為自己在撰寫程式的時候, 常常會搞不清楚要用哪一個語法 . 於是會開始上網找mdn, 不僅浪費時間又耗費精神, 為了加速自己開發的流程, 所以特別把用法和適用場景詳述一番. </p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/uncategorized/2020/02/18/Built-in-Function/#more" rel="contents">
@@ -782,285 +1024,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-TW">
-    <link itemprop="mainEntityOfPage" href="http://fan630.github.io/uncategorized/2020/02/17/select-related-data-tips/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Norris">
-      <meta itemprop="description" content="每天都要進步一點點">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="擴充海馬迴的百寶箱">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/uncategorized/2020/02/17/select-related-data-tips/" class="post-title-link" itemprop="url">做出一個連動選擇表單</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">發表於</span>
-
-              <time title="創建時間：2020-02-17 10:43:01" itemprop="dateCreated datePublished" datetime="2020-02-17T10:43:01+08:00">2020-02-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新於</span>
-                <time title="修改時間：2020-04-15 21:31:42" itemprop="dateModified" datetime="2020-04-15T21:31:42+08:00">2020-04-15</time>
-              </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/uncategorized/2020/02/17/select-related-data-tips/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="uncategorized/2020/02/17/select-related-data-tips/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="./%E5%81%9A%E5%87%BA%E4%B8%80%E5%80%8B%E9%80%A3%E5%8B%95%E9%81%B8%E6%93%87%E8%A1%A8%E5%96%AE/selectform.png" alt=""></p>
-<p>這個其實蠻常看到的,最常出現是在透過縣市選擇區域, 例如說先點選新北市, 再從新北市各分區裡面挑一個, 例如說新店區爾爾. 通常拿到的可能是一般陣列裡面包著物件的格式, 因此底下就在敘述如何改變資料的結構. </p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/uncategorized/2020/02/17/select-related-data-tips/#more" rel="contents">
-                閱讀全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-TW">
-    <link itemprop="mainEntityOfPage" href="http://fan630.github.io/JS30/2020/02/16/LocalStorage/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Norris">
-      <meta itemprop="description" content="每天都要進步一點點">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="擴充海馬迴的百寶箱">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/JS30/2020/02/16/LocalStorage/" class="post-title-link" itemprop="url">LocalStorage</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">發表於</span>
-
-              <time title="創建時間：2020-02-16 23:12:10" itemprop="dateCreated datePublished" datetime="2020-02-16T23:12:10+08:00">2020-02-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新於</span>
-                <time title="修改時間：2020-03-05 13:42:13" itemprop="dateModified" datetime="2020-03-05T13:42:13+08:00">2020-03-05</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分類於</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JS30/" itemprop="url" rel="index"><span itemprop="name">JS30</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/JS30/2020/02/16/LocalStorage/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="JS30/2020/02/16/LocalStorage/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>就是在本機儲存, 如果換了一台電腦就不行惹.換機器就不行惹, 這是基本觀念. </p>
-<p>如果要預覽功能, 請移駕到<a href="https://codepen.io/fan630/pen/RwPaZgm" target="_blank" rel="noopener">codepen</a></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/JS30/2020/02/16/LocalStorage/#more" rel="contents">
-                閱讀全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-TW">
-    <link itemprop="mainEntityOfPage" href="http://fan630.github.io/JS30/2020/02/16/Array-reference-and-Copying/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Norris">
-      <meta itemprop="description" content="每天都要進步一點點">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="擴充海馬迴的百寶箱">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/JS30/2020/02/16/Array-reference-and-Copying/" class="post-title-link" itemprop="url">Array Reference and Copying</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">發表於</span>
-
-              <time title="創建時間：2020-02-16 22:56:22" itemprop="dateCreated datePublished" datetime="2020-02-16T22:56:22+08:00">2020-02-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新於</span>
-                <time title="修改時間：2020-04-07 13:20:44" itemprop="dateModified" datetime="2020-04-07T13:20:44+08:00">2020-04-07</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分類於</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JS30/" itemprop="url" rel="index"><span itemprop="name">JS30</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/JS30/2020/02/16/Array-reference-and-Copying/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="JS30/2020/02/16/Array-reference-and-Copying/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>這是一篇記錄『深入淺出 JS30 Day 14：JavaScript References VS Copying』 的筆記文章, 這個觀念在各大筆式都很常被考到, 所以搞懂它, 擁抱它, 是一件很重要的事情, 底下問題的答案, 都放到excel檔裡面, 都寫對了, 才算是瞭解了. </p>
-<p><a href="https://github.com/wesbos/JavaScript30/blob/master/14%20-%20JavaScript%20References%20VS%20Copying/index-FINISHED.html" target="_blank" rel="noopener">原始題目</a></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/JS30/2020/02/16/Array-reference-and-Copying/#more" rel="contents">
-                閱讀全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1131,7 +1094,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
